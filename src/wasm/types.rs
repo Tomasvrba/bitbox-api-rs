@@ -75,7 +75,7 @@ type EthSignature = {
   s: Uint8Array;
   v: Uint8Array;
 };
-type EthAddressCase = 'Upper' | 'Lower' | 'Mixed';
+type EthAddressCase = 'upper' | 'lower' | 'mixed';
 type CardanoXpub = Uint8Array;
 type CardanoXpubs = CardanoXpub[];
 type CardanoNetwork = 'mainnet' | 'testnet';
@@ -287,17 +287,17 @@ impl TryFrom<TsEth1559Transaction> for crate::eth::EIP1559Transaction {
 }
 
 impl TryFrom<TsEthAddressCase> for crate::pb::EthAddressCase {
-  type Error = JavascriptError;
-  fn try_from(value: TsEthAddressCase) -> Result<Self, Self::Error> {
-      serde_wasm_bindgen::from_value(value.into())
-          .map_err(|_| JavascriptError::InvalidType("wrong type for EthAddressCase"))
-  }
+    type Error = JavascriptError;
+    fn try_from(value: TsEthAddressCase) -> Result<Self, Self::Error> {
+        serde_wasm_bindgen::from_value(value.into())
+            .map_err(|_| JavascriptError::InvalidType("wrong type for EthAddressCase"))
+    }
 }
 
 impl From<crate::pb::EthAddressCase> for TsEthAddressCase {
-  fn from(case: crate::pb::EthAddressCase) -> Self {
-      serde_wasm_bindgen::to_value(&case).unwrap().into()
-  }
+    fn from(case: crate::pb::EthAddressCase) -> Self {
+        serde_wasm_bindgen::to_value(&case).unwrap().into()
+    }
 }
 
 impl TryFrom<TsCardanoNetwork> for crate::pb::CardanoNetwork {

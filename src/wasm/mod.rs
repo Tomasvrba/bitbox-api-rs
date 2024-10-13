@@ -419,7 +419,12 @@ impl PairedBitBox {
     ) -> Result<types::TsEthSignature, JavascriptError> {
         let signature = self
             .device
-            .eth_sign_transaction(chain_id, &keypath.try_into()?, &tx.try_into()?, address_case.map(TryInto::try_into).transpose()?)
+            .eth_sign_transaction(
+                chain_id,
+                &keypath.try_into()?,
+                &tx.try_into()?,
+                address_case.map(TryInto::try_into).transpose()?,
+            )
             .await?;
 
         let v: u64 = compute_v(chain_id, signature[64])
@@ -443,7 +448,11 @@ impl PairedBitBox {
     ) -> Result<types::TsEthSignature, JavascriptError> {
         let signature = self
             .device
-            .eth_sign_1559_transaction(&keypath.try_into()?, &tx.try_into()?, address_case.map(TryInto::try_into).transpose()?)
+            .eth_sign_1559_transaction(
+                &keypath.try_into()?,
+                &tx.try_into()?,
+                address_case.map(TryInto::try_into).transpose()?,
+            )
             .await?;
 
         Ok(serde_wasm_bindgen::to_value(&types::EthSignature {

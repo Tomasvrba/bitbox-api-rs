@@ -123,12 +123,18 @@ pub struct EIP1559Transaction {
 }
 
 /// Identifies the case of the recipient address given as hexadecimal string.
-/// This function exists as a convenience to potentially help clients to determine the case of the
+/// This function exists as a convenience to help clients to determine the case of the
 /// recipient address.
 pub fn eth_identify_case(recipient_address: &str) -> pb::EthAddressCase {
-    if recipient_address.to_uppercase() == recipient_address {
+    if recipient_address
+        .chars()
+        .all(|c| !c.is_ascii_alphabetic() || c.is_ascii_uppercase())
+    {
         pb::EthAddressCase::Upper
-    } else if recipient_address.to_lowercase() == recipient_address {
+    } else if recipient_address
+        .chars()
+        .all(|c| !c.is_ascii_alphabetic() || c.is_ascii_lowercase())
+    {
         pb::EthAddressCase::Lower
     } else {
         pb::EthAddressCase::Mixed
@@ -1266,5 +1272,21 @@ mod tests {
             &msg,
         )
         .is_err());
+    }
+
+    #[test]
+    fn test_eth_identify_case() {
+        assert_eq!(
+            eth_identify_case("0XF39FD6E51AAD88F6F4CE6AB8827279CFFFB92266"),
+            pb::EthAddressCase::Upper
+        );
+        assert_eq!(
+            eth_identify_case("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266"),
+            pb::EthAddressCase::Lower
+        );
+        assert_eq!(
+            eth_identify_case("0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266"),
+            pb::EthAddressCase::Mixed
+        );
     }
 }
