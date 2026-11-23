@@ -575,10 +575,8 @@ impl<R: Runtime> PairedBitBox<R> {
             chain_id: tx.chain_id,
             keypath: keypath.to_vec(),
             nonce: crate::util::remove_leading_zeroes(&tx.nonce),
-            max_priority_fee_per_gas: crate::util::remove_leading_zeroes(
-                &tx.max_priority_fee_per_gas,
-            ),
-            max_fee_per_gas: crate::util::remove_leading_zeroes(&tx.max_fee_per_gas),
+            max_priority_fee_per_gas: crate::util::remove_leading_zeroes(&tx.max_fee_per_gas),
+            max_fee_per_gas: crate::util::remove_leading_zeroes(&tx.max_priority_fee_per_gas),
             gas_limit: crate::util::remove_leading_zeroes(&tx.gas_limit),
             recipient: tx.recipient.to_vec(),
             value: crate::util::remove_leading_zeroes(&tx.value),
